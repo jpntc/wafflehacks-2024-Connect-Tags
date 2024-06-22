@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -17,14 +18,16 @@ const SignIn = () => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    console.log( { email, password });
+    navigation.navigate("HomeScreen");
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.AppName}>Fast Connect</Text>
+      <View style={styles.Banner}>
+        <Text style={styles.AppName}>Fast Connect</Text>
+        <Text style={styles.motto}>Make Connections Faster</Text>
+      </View>
       <Image source={require("../assets/login.jpg")} style={styles.logo} />
-      <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -42,14 +45,13 @@ const SignIn = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity >
-        <Text style={styles.signup} onPress={() => navigation.navigate("Register")}>Sign up</Text>
-      </TouchableOpacity>
-      <Button
-        title="LogIn"
-        onPress={handlePress}
-        color="#1E90FF"
-      />
+      <View style={styles.signupContainer}>
+        <Text style={styles.orText}>Or</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text style={styles.signupText}> Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+      <Button title="LogIn" onPress={handlePress} color="#1E90FF" />
     </SafeAreaView>
   );
 };
@@ -62,10 +64,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "white",
   },
+  Banner: {
+    alignItems: "center",
+    marginBottom: 60,
+  },
   AppName: {
     fontWeight: "bold",
     fontSize: 38,
-    marginBottom: 20,
     color: "#1f90ed",
   },
   logo: {
@@ -73,15 +78,24 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 20,
   },
-  title: {
+  motto: {
     fontWeight: "bold",
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 18,
+
     color: "#1E90FF",
   },
-  signup: {
-    color: "#1E90FF",
+  signupContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
+  },
+  orText: {
+    fontSize: 16,
+  },
+  signupText: {
+    fontSize: 16,
+    color: "#1E90FF",
+    marginLeft: 1,
   },
   input: {
     maxWidth: "80%",

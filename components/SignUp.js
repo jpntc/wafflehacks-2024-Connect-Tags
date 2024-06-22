@@ -8,7 +8,10 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,10 +19,11 @@ const SignUpScreen = () => {
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleSignUp = () => {
-   const user_info = { firstName, lastName, birthday, email, password };
-   console.log(user_info);
+    const user_info = { firstName, lastName, birthday, email, password };
+    console.log(user_info);
   };
 
   return (
@@ -65,6 +69,12 @@ const SignUpScreen = () => {
           secureTextEntry
         />
         <Button title="Sign Up" onPress={handleSignUp} color="#1E90FF" />
+        <TouchableOpacity
+          style={styles.backArrowContainer}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="arrow-back" size={30} color="#1E90FF" />
+        </TouchableOpacity>
       </ScrollView>
     </>
   );
@@ -99,6 +109,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+  },
+  backArrowContainer: {
+    position: "absolute",
+    bottom: 20,
+    alignItems: "center",
   },
 });
 
