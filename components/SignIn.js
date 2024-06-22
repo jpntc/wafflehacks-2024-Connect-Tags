@@ -1,47 +1,56 @@
 import React, { useState } from "react";
-import { View, SafeAreaView, Text, TextInput, Button, StyleSheet, Image } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const SignIn = ({ type }) => {
+const SignIn = () => {
+  const route = useRoute();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handlePress = () => {
-    console.log(`${type} with`, { email, password });
+    console.log( { email, password });
   };
 
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.AppName}>Fast Connect</Text>
-        <Image source={require("../assets/login.jpg")} style={styles.logo} />
-        <Text style={styles.title}>
-          {type === "login" ? "Login" : "Sign Up"}
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#aaa"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#aaa"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Text style={styles.signup}>Or sign up</Text>
-        <Button
-          title={type === "login" ? "Login" : "Sign Up"}
-          onPress={handlePress}
-          color="#1E90FF"
-        />
-      </SafeAreaView>
-    </>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.AppName}>Fast Connect</Text>
+      <Image source={require("../assets/login.jpg")} style={styles.logo} />
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        placeholderTextColor="#aaa"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <TouchableOpacity >
+        <Text style={styles.signup} onPress={() => navigation.navigate("Register")}>Sign up</Text>
+      </TouchableOpacity>
+      <Button
+        title="LogIn"
+        onPress={handlePress}
+        color="#1E90FF"
+      />
+    </SafeAreaView>
   );
 };
 
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 38,
     marginBottom: 20,
-    color: "orange",
+    color: "#1f90ed",
   },
   logo: {
     width: 100,
@@ -71,11 +80,12 @@ const styles = StyleSheet.create({
     color: "#1E90FF",
   },
   signup: {
-    color: "#b8b8b8",
+    color: "#1E90FF",
+    marginBottom: 20,
   },
   input: {
-    maxWidth: "40%",
-    minWidth: "40%",
+    maxWidth: "80%",
+    minWidth: "80%",
     height: 40,
     borderColor: "#1E90FF",
     borderWidth: 1,

@@ -1,32 +1,57 @@
+// SignUpScreen.js
 import React, { useState } from "react";
 import {
   View,
-  SafeAreaView,
   Text,
   TextInput,
   Button,
   StyleSheet,
   Image,
+  ScrollView,
 } from "react-native";
 
-const SignUp = () => {
+const SignUpScreen = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handlePress = () => {
-    console.log("Sign up with", { email, password });
+  const handleSignUp = () => {
+   const user_info = { firstName, lastName, birthday, email, password };
+   console.log(user_info);
   };
 
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.AppName}>Fast Connect</Text>
-        <Image source={require("../assets/login.jpg")} style={styles.logo} />
-        <Text style={styles.title}>Sign Up</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Image source={require("../assets/signup3.jpg")} style={styles.logo} />
+      </ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
+          autoCapitalize="words"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+          autoCapitalize="words"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Birthday (YYYY-MM-DD)"
+          value={birthday}
+          onChangeText={setBirthday}
+          keyboardType="numeric"
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#aaa"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -35,53 +60,46 @@ const SignUp = () => {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor="#aaa"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Button title="Sign Up" onPress={handlePress} color="#1E90FF" />
-      </SafeAreaView>
+        <Button title="Sign Up" onPress={handleSignUp} color="#1E90FF" />
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
+    flexGrow: 1,
     alignItems: "center",
-    padding: 20,
+    justifyContent: "center",
     backgroundColor: "white",
   },
-  AppName: {
-    fontWeight: "bold",
-    fontSize: 38,
-    marginBottom: 20,
-    color: "orange",
-  },
   logo: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
   },
   title: {
-    fontWeight: "bold",
     fontSize: 24,
+    fontWeight: "bold",
     marginBottom: 20,
     color: "#1E90FF",
   },
   input: {
-    maxWidth: "80%",
-    minWidth: "80%",
+    width: "80%",
     height: 40,
     borderColor: "#1E90FF",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
-    color: "black",
   },
 });
 
-export default SignUp;
+export default SignUpScreen;
