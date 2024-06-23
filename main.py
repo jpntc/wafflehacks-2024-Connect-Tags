@@ -3,7 +3,6 @@ from flask_cors import CORS
 from diffusers import StableDiffusionPipeline
 import torch
 import cohere
-from firebase_admin import auth
 import pyrebase
 app = Flask(__name__)
 CORS(app)
