@@ -1,12 +1,10 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from io import BytesIO
-import base64
-import uuid
 from diffusers import StableDiffusionPipeline
 import torch
 import cohere
-
+from firebase_admin import auth
+import pyrebase
 app = Flask(__name__)
 CORS(app)
 
@@ -28,38 +26,38 @@ def generate(prompt):
     image = images[0]
     image.save('generated_image.png')
 
+firebaseConfig = {
+    "apiKey": "INSERT_YOUR_API_KEY_HERE",
+    "authDomain": "INSERT_YOUR_AUTH_DOMAIN_HERE",
+    "projectId": "INSERT_YOUR_PROJECT_ID_HERE",
+    "storageBucket": "INSERT_YOUR_STORAGE_BUCKET_HERE",
+    "messagingSenderId": "INSERT_YOUR_MESSAGING_SENDER_ID_HERE",
+    "appId": "INSERT_YOUR_APP_ID_HERE",
+    "measurementId": "INSERT_YOUR_MEASUREMENT_ID_HERE"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    email = request.json['email']
+    password = request.json['password']
+    try:
+        user = auth.create_user_with_email_and_password(email=email, password=password)
+        return jsonify({'message': 'User created successfully'}), 200
+    except auth.AuthError as e:
+        return jsonify({'error': str(e)}), 400
+
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    user = User.query.filter_by(email=email, password=password).first()
-    if user:
-        return jsonify({
-            'success': True,
-            'user_id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email,
-            'description': user.description,
-            'image_url': user.image_url,
-            'ai_description': user.ai_description
-        })
-    return jsonify({'success': False})
-
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    first_name = data['first_name']
-    last_name = data['last_name']
-    email = data['email']
-    password = data['password']
-    if User.query.filter_by(email=email).first():
-        return jsonify({'success': False, 'message': 'Email already exists'})
-    new_user = User(first_name=first_name, last_name=last_name, email=email, password=password)
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({'success': True})
+    email = request.json['email']
+    password = request.json['password']
+    try:
+        user = auth.sign_in_with_email_and_password(email=email, password=password)
+        return jsonify({'message': 'User logged in'}), 
+    except auth.AuthError as e:
+        return jsonify({'error': str(e)}), 401
 
 @app.route('/generate-image', methods=['POST'])
 def generate_image():
