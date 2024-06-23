@@ -1,28 +1,47 @@
-// SignUpScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   Image,
   ScrollView,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   const handleSignUp = () => {
-    const user_info = { firstName, lastName, birthday, email, password };
+    const user_info = { firstName, lastName, email, password };
     console.log(user_info);
   };
 
@@ -30,51 +49,61 @@ const SignUpScreen = () => {
     <>
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={require("../assets/signup3.jpg")} style={styles.logo} />
-      </ScrollView>
-      <ScrollView contentContainerStyle={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
-          autoCapitalize="words"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={setLastName}
-          autoCapitalize="words"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Birthday (YYYY-MM-DD)"
-          value={birthday}
-          onChangeText={setBirthday}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Button title="Sign Up" onPress={handleSignUp} color="#1E90FF" />
-        <TouchableOpacity
-          style={styles.backArrowContainer}
-          onPress={() => navigation.goBack()}
-        >
-          <Icon name="arrow-back" size={30} color="#1E90FF" />
+        <Text style={styles.title}>Sign Up</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="John"
+            value={firstName}
+            onChangeText={setFirstName}
+            autoCapitalize="words"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Doe"
+            value={lastName}
+            onChangeText={setLastName}
+            autoCapitalize="words"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="johndoe@example.com"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="******"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
+          <Text style={styles.signupButtonText}>Sign Up</Text>
         </TouchableOpacity>
+        {isKeyboardVisible ? (
+          <></>
+        ) : (
+          <TouchableOpacity
+            style={styles.backArrowContainer}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="arrow-back" size={30} color="black" />
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </>
   );
@@ -85,7 +114,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#e3e6e8",
   },
   logo: {
     width: 200,
@@ -93,27 +122,46 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
-    display: "flex",
+    borderRadius: 90,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#1E90FF",
+    color: "black",
+  },
+  inputContainer: {
+    width: "80%",
+    marginBottom: 10,
+  },
+  inputLabel: {
+    marginBottom: 5,
+    color: "black",
   },
   input: {
-    width: "80%",
     height: 40,
-    borderColor: "#1E90FF",
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
+  },
+  signupButton: {
+    marginTop: 20,
+    backgroundColor: "black",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+  },
+  signupButtonText: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
   },
   backArrowContainer: {
+    color: "white",
     position: "absolute",
     bottom: 20,
-    alignItems: "center",
+    left: 20,
   },
 });
 
