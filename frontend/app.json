@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fast-connect",
-    "slug": "fast-connect",
+    "name": "connect-tags",
+    "slug": "connect-tags",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -25,7 +25,7 @@ const SignIn = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.Banner}>
         <Image source={require("../assets/login.jpg")} style={styles.logo} />
-        <Text style={styles.AppName}>Fast Connect</Text>
+        <Text style={styles.AppName}>Connect Tags</Text>
         <Text style={styles.motto}>Make Friends Faster</Text>
       </View>
       <View style={styles.form}>
