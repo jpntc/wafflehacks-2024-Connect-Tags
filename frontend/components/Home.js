@@ -20,6 +20,7 @@ const Home = ({ User }) => {
       const endpoint = "https://api.example.com/generateCard"; // Replace with your API endpoint
       const response = await fetch(endpoint, {
         method: "POST",
+        
         headers: {
           "Content-Type": "application/json",
         },
