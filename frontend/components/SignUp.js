@@ -11,6 +11,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState("");
@@ -40,9 +43,29 @@ const SignUpScreen = () => {
     };
   }, []);
 
+  // Modified the handleSignUp logic 
   const handleSignUp = () => {
-    const user_info = { firstName, lastName, email, password };
-    console.log(user_info);
+    //const user_info = { firstName, lastName, email, password };
+    //console.log(user_info);
+
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    // ...
+    
+    return updateProfile(user, { displayName: `${firstName} ${lastName}`, });
+    })
+
+    .then(() => {
+      console.log("User signed up successfully with first and last name with email and password!");
+    })
+    .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error("Error during sign up:", errorCode, errorMessage);
+    // ..
+    });
   };
 
   return (

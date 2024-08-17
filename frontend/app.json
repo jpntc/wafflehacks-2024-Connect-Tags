@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "fast-connect",
-    "slug": "fast-connect",
+    "slug": "connect-tags",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,6 +22,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "37dffb7c-abae-4696-b148-21d451d15c4f"
+      }
+    },
+    "owner": "jpntc"
   }
 }

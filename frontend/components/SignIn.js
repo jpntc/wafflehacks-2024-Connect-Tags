@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -10,6 +10,8 @@ import {
   View,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { auth } from "../firebaseConfig";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const SignIn = () => {
   const route = useRoute();
@@ -17,8 +19,43 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user)
+      {
+        console.log("User is still signed in (it worked):", user.uid);
+        navigation.navigate("HomeScreen", { user });
+      }
+      else
+      {
+        console.log("No user is currently signed in, navigating to Login page/screen");
+        navigation.navigate("LogIn");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigation]);
+
   const handlePress = () => {
-    navigation.navigate("HomeScreen");
+    // If the email and password is not empty, sign in with existing email and password and redirect user to home screen
+    if (email !== "" && password !== "")
+    {
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        navigation.navigate("HomeScreen", { user: userCredential.user });
+        setEmail(""); // Clear email input field
+        setPassword(""); // Clear password input field
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Error during sign in:", errorCode, errorMessage);
+      });
+    }
+    else 
+    {
+      console.log("Please enter an email and password");
+    }
   };
 
   return (
