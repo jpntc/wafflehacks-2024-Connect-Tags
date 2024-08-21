@@ -8,8 +8,9 @@ import {
   View,
   Modal,
   TextInput,
+  StatusBar
 } from "react-native";
-
+import SandwichMenu from "./SandwichMenu"
 const Home = ({ User }) => {
   const [showModal, setShowModal] = useState(false);
   const [rawDescription, setRawDescription] = useState("");
@@ -42,22 +43,25 @@ const Home = ({ User }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SafeAreaView style={styles.banner}>
-        <Image source={require("../assets/login.jpg")} style={styles.logo} />
+      {/* <StatusBar hidden={true}/> */}
+      <View style={styles.banner}>
+        <SandwichMenu style={{}} />
         <View style={styles.welcomeView}>
           <Text style={styles.welcomeText}>Welcome</Text>
           <Text style={styles.welcomeText}>FastConnectSquad</Text>
+          <Image source={require("../assets/login.jpg")} style={styles.logo} />
         </View>
-      </SafeAreaView>
+      </View>
       <View style={styles.paneContainer}>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleModal}>
             <Text style={styles.buttonText}>Customize Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Print Card</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
+
         <View style={styles.pane}>
           <View style={styles.top}>
             <View style={styles.necklace}></View>
@@ -128,10 +132,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#484948",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 40,
-    paddingBottom: 30,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -141,11 +145,14 @@ const styles = StyleSheet.create({
   },
   welcomeView: {
     flex: 1,
+    display:"flex",
+    width:"fit",
+    height:"fit",
+    flexDirection:"row",
     backgroundColor: "white",
-    marginLeft: 20,
-    padding: 10,
+    marginLeft: 10,
+    padding: 5,
     borderRadius: 10,
-    justifyContent: "center",
   },
   welcomeText: {
     fontSize: 20,
