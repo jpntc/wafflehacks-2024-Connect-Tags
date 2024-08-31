@@ -1,12 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import LogInNavigator from "./components/LogInNavigator";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import AuthNavigation from "./components/AuthNavigation";
 
 export default function App() {
+
   return (
-    <>
-      <LogInNavigator />
-    </>
+        <AuthNavigation authenticateHook={setIsAuthenticated} />
   );
 }
 

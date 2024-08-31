@@ -13,7 +13,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
-const SignIn = () => {
+const SignInScreen = () => {
   const route = useRoute();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +24,7 @@ const SignIn = () => {
       if (user)
       {
         console.log("User is still signed in (it worked):", user.uid);
-        navigation.navigate("HomeScreen", { user });
+        navigation.navigate("App", { user });
       }
       else
       {
@@ -42,7 +42,7 @@ const SignIn = () => {
     {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigation.navigate("HomeScreen", { user: userCredential.user });
+        navigation.navigate("App", { user: userCredential.user });
         setEmail(""); // Clear email input field
         setPassword(""); // Clear password input field
       })
@@ -195,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignInScreen;
