@@ -6,7 +6,8 @@ import AuthNavigation from "./components/AuthNavigation";
 export default function App() {
 
   return (
-        <AuthNavigation authenticateHook={setIsAuthenticated} />
+        <AuthNavigation  />
+        //authenticateHook={setIsAuthenticated}
   );
 }
 

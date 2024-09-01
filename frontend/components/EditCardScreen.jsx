@@ -18,10 +18,10 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
   const [descriptionTextColor, setDescriptionTextColor] = useState("black");
   const [descriptionBackgroundColor, setDescriptionBackgroundColor] = useState("grey");
   const [descriptionFontWeight, setDescriptionFontWeight] = useState("normal");
-  const [descriptionFontSize, setDescriptionFontSize] = useState("20");
+  const [descriptionFontSize, setDescriptionFontSize] = useState(20);
   const [nameBackgroundColor, setNameBackgroundColor] = useState("");
-  const [nameFontSize, setNameFontSize] = useState("");
-  const [nameFontWeight, setNameFontWeight] = useState("");
+  const [nameFontSize, setNameFontSize] = useState(0);
+  const [nameFontWeight, setNameFontWeight] = useState(0);
   const [nameTextColor, setNameTextColor] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
@@ -59,29 +59,36 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
   const getDescription = async () => {
     if (description == "" || name == "") {
       alert("You didn't enter anything in the description or for your name");
+      return;
     }
-    const endpoint = ""; //Put backend endpoint here. Backend will generate the new description, call two other apis to get the banner and avatar and return their urls.
+
+    // Replace 'localhost' with your computer's IP address.
+    const endpoint = "http:192.168.1.109:3001/generate-image";
 
     try {
-      const request = await fetch(endpoint, description);
+      const request = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description }),
+      });
       const response = await request.json();
 
-      if (request.status == 200) {
+      console.log("Made request");
+      if (request.status === 200) {
         setGeneratedDescription(response.generatedDescription);
         setUserBanner(response.userBanner);
         setUserAvatar(response.userAvatar);
         setData({
-          userDescription: generatedDescription,
-          userBanner: userBanner,
-          userAvatar: userAvatar,
+          userDescription: response.generatedDescription,
+          userBanner: response.userBanner,
+          userAvatar: response.userAvatar,
           userName: name,
         });
       }
     } catch (error) {
-      console.log(
-        "Ann error occurred when making a request to the backend with the backend objects."
-      );
-      console.log(error);
+      console.log("An error occurred:", error);
     }
   };
 
@@ -156,7 +163,7 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
           <Text style={styles.label}>Name Font Size</Text>
           <Picker
             selectedValue={nameFontSize}
-            onValueChange={(value) => setNameFontSize(value)}
+            onValueChange={(value) => setNameFontSize(parseInt(value, 10))}
           >
             <Picker.Item label="10" value="10" />
             <Picker.Item label="20" value="20" />
@@ -210,7 +217,9 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
           <Text style={styles.label}>Description Font Size</Text>
           <Picker
             selectedValue={descriptionFontSize}
-            onValueChange={(value) => setDescriptionFontSize(value)}
+            onValueChange={(value) =>
+              setDescriptionFontSize(parseInt(value, 10))
+            }
           >
             <Picker.Item label="10" value="10" />
             <Picker.Item label="20" value="20" />
@@ -242,7 +251,8 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
             />
           </View>
         </View>
-        <TouchableOpacity style={styles.generateCardButton}
+        <TouchableOpacity
+          style={styles.generateCardButton}
           onPress={() => {
             generateCard();
           }}
@@ -250,7 +260,7 @@ const EditCard = (cardStyle, setCardStyle, userData, setUserData) => {
           <Text style={styles.generateCardButtonText}>Generate Your Card</Text>
         </TouchableOpacity>
         <View style={styles.cardPane}>
-          <CardPane Data={Data} customStyle={Style}/>
+          <CardPane Data={Data} customStyle={Style} />
         </View>
       </ScrollView>
     </SafeAreaView>
